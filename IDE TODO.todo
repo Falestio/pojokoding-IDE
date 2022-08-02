@@ -1,6 +1,11 @@
-- prompt 
-- output
-- sidebar
-- code editor
-- submit button
-- navbar
+[X] prompt 
+[] output
+[X] sidebar
+[X] code editor 
+[X] submit button
+[X] navbar
+[] Icon
+[] solution
+[] reset button
+[] API
+
