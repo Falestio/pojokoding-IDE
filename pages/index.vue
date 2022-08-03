@@ -5,10 +5,8 @@ import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
 const extensions = [javascript(), oneDark];
 
-//================================================ JUDGE0 API
-const code = ref("");
-
-const options = {
+//================================================ JUDGE0 ABOUT
+const aboutOptions = {
     method: "GET",
     headers: {
         "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
@@ -18,27 +16,50 @@ const options = {
 
 const aboutUri = "https://judge0-ce.p.rapidapi.com/about";
 
-let data = ref(null);
+let aboutData = ref(null);
 
 async function postAbout() {
-    data.value = await useFetch(aboutUri, options);
+    aboutData.value = await useFetch(aboutUri, aboutOptions);
 }
+
+//=============================================== JUDGE0 POST SUBMISSION
+const code = ref("");
+
+function postSubmission(){
+  const encodedCode = Buffer.from(code).toString('base64')
+
+  const postSubmissionOptions = {
+      method: "POST",
+      params: { base64_encoded: true },
+      headers: {
+          "content-type": "application/json",
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
+          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+      },
+      body: {
+        "source-code": encodedCode,
+        "language_id": 26,
+      }
+  };
+  
+}
+
 
 //================================================= UI
 const isVisible = ref(false);
 const bukaSoal = ref(true);
 const bukaOutput = ref(false);
 
-function membukaOutput(){
-  bukaSoal.value = false
-  bukaOutput.value = true
+function membukaOutput() {
+    bukaSoal.value = false;
+    bukaOutput.value = true;
 }
 
-function membukaSoal(){
-  bukaSoal.value = true
-  bukaOutput.value = false
+function membukaSoal() {
+    bukaSoal.value = true;
+    bukaOutput.value = false;
 }
-
 </script>
 
 <template>
@@ -70,8 +91,8 @@ function membukaSoal(){
 
             <div class="soal bg-gray-100 overflow-y-auto">
                 <div class="tabs tabs-boxed sticky top-0 rounded-none px-6 py-2 shadow">
-                    <a class="tab" :class="{'tab-active': bukaSoal}" @click="membukaSoal()">Soal</a>
-                    <a class="tab" :class="{'tab-active': bukaOutput}" @click="membukaOutput()">Output</a>
+                    <a class="tab" :class="{ 'tab-active': bukaSoal }" @click="membukaSoal()">Soal</a>
+                    <a class="tab" :class="{ 'tab-active': bukaOutput }" @click="membukaOutput()">Output</a>
                 </div>
 
                 <div class="p-6" :class="{ hidden: !bukaSoal }">

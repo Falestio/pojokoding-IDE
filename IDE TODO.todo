@@ -1,11 +1,13 @@
 [X] prompt 
-[] output
+[x] output
 [X] sidebar
 [X] code editor 
 [X] submit button
 [X] navbar
-[] Icon
-[] solution
+[x] Icon
+[] interact with API
+[] solution page
+[] testing
+[] testing ui
 [] reset button
-[] API
-
+[] connect to CMS
