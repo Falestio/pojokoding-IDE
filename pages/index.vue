@@ -23,28 +23,45 @@ async function postAbout() {
 }
 
 //=============================================== JUDGE0 POST SUBMISSION
+
 const code = ref("");
 
-function postSubmission(){
-  const encodedCode = Buffer.from(code).toString('base64')
-
-  const postSubmissionOptions = {
-      method: "POST",
-      params: { base64_encoded: true },
-      headers: {
-          "content-type": "application/json",
-          "Content-Type": "application/json",
-          "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
-          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-      },
-      body: {
-        "source-code": encodedCode,
-        "language_id": 26,
-      }
-  };
-  
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function compileCode() {
+    const encodedCode = Buffer.from(code).toString("base64");
+    const baseUrl = "https://judge0-ce.p.rapidapi.com/submissions";
+
+    const options = {
+        method: "POST",
+        params: { base64_encoded: true },
+        headers: {
+            "content-type": "application/json",
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
+            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+        },
+        body: {
+            "source-code": encodedCode,
+            language_id: 26,
+        },
+    };
+
+    const response = await useFetch(baseUrl, options);
+    const token = response.data.token;
+
+    await promiseTimeout(2500)
+
+    const output = useFetch(`${baseUrl}/${token}`, {
+        params: { base64_encoded: true },
+        headers: {
+            "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
+            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+        },
+    });
+}
 
 //================================================= UI
 const isVisible = ref(false);
