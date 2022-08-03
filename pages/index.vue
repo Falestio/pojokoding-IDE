@@ -9,24 +9,35 @@ const extensions = [javascript(), oneDark];
 const code = ref("");
 
 const options = {
-  method: "GET",
-  headers: {
-    "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
-    "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-  },
+    method: "GET",
+    headers: {
+        "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
+        "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+    },
 };
 
-const aboutUri = "https://judge0-ce.p.rapidapi.com/about"
+const aboutUri = "https://judge0-ce.p.rapidapi.com/about";
 
-let data = ref(null)
+let data = ref(null);
 
-async function postAbout(){
-  data.value = await useFetch(aboutUri, options)
+async function postAbout() {
+    data.value = await useFetch(aboutUri, options);
 }
 
 //================================================= UI
 const isVisible = ref(false);
+const bukaSoal = ref(true);
+const bukaOutput = ref(false);
 
+function membukaOutput(){
+  bukaSoal.value = false
+  bukaOutput.value = true
+}
+
+function membukaSoal(){
+  bukaSoal.value = true
+  bukaOutput.value = false
+}
 
 </script>
 
@@ -59,57 +70,57 @@ const isVisible = ref(false);
 
             <div class="soal bg-gray-100 overflow-y-auto">
                 <div class="tabs tabs-boxed sticky top-0 rounded-none px-6 py-2 shadow">
-                    <a class="tab">Soal</a>
-                    <a class="tab tab-active">Output</a>
+                    <a class="tab" :class="{'tab-active': bukaSoal}" @click="membukaSoal()">Soal</a>
+                    <a class="tab" :class="{'tab-active': bukaOutput}" @click="membukaOutput()">Output</a>
                 </div>
 
-                <div class="p-6">
+                <div class="p-6" :class="{ hidden: !bukaSoal }">
+                    <p class="text-lg">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
+                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
+                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
+                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
+                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
+                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
+                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
+                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
+                    </p>
+                    <p class="text-lg">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
+                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
+                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
+                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
+                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
+                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
+                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
+                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
+                    </p>
+                    <p class="text-lg">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
+                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
+                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
+                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
+                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
+                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
+                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
+                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
+                    </p>
+                    <p class="text-lg">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
+                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
+                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
+                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
+                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
+                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
+                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
+                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
+                    </p>
+                </div>
+
+                <div class="p-6" :class="{ hidden: !bukaOutput }">
                     <div class="bg-white w-full min-h-[20vh] text-lg">
-                        <pre>{{data}}</pre>
+                        <pre>{{ data }}</pre>
                     </div>
-                </div>
-
-                <div class="p-6 hidden">
-                    <p class="text-lg">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
-                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
-                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
-                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
-                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
-                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
-                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
-                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
-                    </p>
-                    <p class="text-lg">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
-                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
-                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
-                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
-                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
-                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
-                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
-                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
-                    </p>
-                    <p class="text-lg">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
-                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
-                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
-                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
-                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
-                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
-                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
-                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
-                    </p>
-                    <p class="text-lg">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
-                        vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
-                        voluptatum ipsa accusantium iure quam iusto recusandae quibusdam est. Commodi eveniet, voluptas
-                        fuga iste ipsa consectetur vitae quo. Consequuntur animi non at ullam pariatur praesentium
-                        commodi, et aut quasi vitae maxime harum eligendi eum ea repellat corrupti. Quam natus illum
-                        distinctio repellat labore error quo quis vero sapiente nihil sunt officiis reiciendis dolor
-                        iure, nam ducimus odit quod at soluta impedit. Eligendi, odit sint debitis vel optio aut
-                        expedita illum perspiciatis, pariatur vitae, quas quo magnam?
-                    </p>
                 </div>
             </div>
 
