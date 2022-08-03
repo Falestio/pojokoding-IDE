@@ -1,12 +1,33 @@
 <script setup>
+//================================================ CODE EDITOR
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
-const code = ref("");
 const extensions = [javascript(), oneDark];
-//================================================
 
-const isVisible = ref(false)
+//================================================ JUDGE0 API
+const code = ref("");
+
+const options = {
+  method: "GET",
+  headers: {
+    "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
+    "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+  },
+};
+
+const aboutUri = "https://judge0-ce.p.rapidapi.com/about"
+
+let data = ref(null)
+
+async function postAbout(){
+  data.value = await useFetch(aboutUri, options)
+}
+
+//================================================= UI
+const isVisible = ref(false);
+
+
 </script>
 
 <template>
@@ -14,31 +35,41 @@ const isVisible = ref(false)
         <the-navbar class="h-[7vh]"></the-navbar>
 
         <div id="ide" class="h-[93vh] grid grid-cols-3">
-
-            <div class="h-full w-12 bg-gray-200 hover:w-60 duration-150 ease-in" @mouseover="isVisible = true" @mouseleave="isVisible = false">
-              <p class="font-bold text-xl mx-auto mt-4" :class="{ hidden: isVisible}"> >> </p>
-              <ul class="flex flex-col p-4 gap-2" :class="{ hidden: !isVisible}">
-                <li class="btn btn-primary rounded btn-ghost justify-start">
-                  <a>Latihan 1</a>
-                </li>
-                <li class="btn btn-primary rounded btn-ghost justify-start">
-                  <a>Latihan 2</a>
-                </li>
-                <li class="btn btn-primary rounded btn-ghost justify-start">
-                  <a>Latihan 3</a>
-                </li>
-                <li class="btn btn-primary rounded btn-ghost justify-start">
-                  <a>Latihan 4</a>
-                </li>
-              </ul>
+            <div
+                class="h-full w-12 bg-gray-200 hover:w-60 duration-150 ease-in"
+                @mouseover="isVisible = true"
+                @mouseleave="isVisible = false"
+            >
+                <p class="font-bold text-xl mx-auto mt-4" :class="{ hidden: isVisible }">>></p>
+                <ul class="flex flex-col p-4 gap-2" :class="{ hidden: !isVisible }">
+                    <li class="btn btn-primary rounded btn-ghost justify-start">
+                        <a>Latihan 1</a>
+                    </li>
+                    <li class="btn btn-primary rounded btn-ghost justify-start">
+                        <a>Latihan 2</a>
+                    </li>
+                    <li class="btn btn-primary rounded btn-ghost justify-start">
+                        <a>Latihan 3</a>
+                    </li>
+                    <li class="btn btn-primary rounded btn-ghost justify-start">
+                        <a>Latihan 4</a>
+                    </li>
+                </ul>
             </div>
 
             <div class="soal bg-gray-100 overflow-y-auto">
                 <div class="tabs tabs-boxed sticky top-0 rounded-none px-6 py-2 shadow">
-                    <a class="tab tab-active">Soal</a>
-                    <a class="tab">Output</a>
+                    <a class="tab">Soal</a>
+                    <a class="tab tab-active">Output</a>
                 </div>
+
                 <div class="p-6">
+                    <div class="bg-white w-full min-h-[20vh] text-lg">
+                        <pre>{{data}}</pre>
+                    </div>
+                </div>
+
+                <div class="p-6 hidden">
                     <p class="text-lg">
                         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe blanditiis similique fuga nulla
                         vel repellat vero odit necessitatibus quibusdam dolore. Tempore, amet consectetur totam
@@ -92,8 +123,10 @@ const isVisible = ref(false)
                     :tab-size="2"
                     :extensions="extensions"
                 />
-                <div class="flex items-center justify-end h-[58px] px-8 absolute bottom-0 bg-slate-600 w-full shadow-lg">
-                    <button class="btn btn-primary btn-sm btn-outline mr-4">Test</button>
+                <div
+                    class="flex items-center justify-end h-[58px] px-8 absolute bottom-0 bg-slate-600 w-full shadow-lg"
+                >
+                    <button class="btn btn-primary btn-sm btn-outline mr-4" @click="postAbout()">Test</button>
                     <button class="btn btn-primary btn-sm">Submit</button>
                 </div>
             </div>
@@ -103,7 +136,6 @@ const isVisible = ref(false)
 
 <style scoped>
 #ide {
-  grid-template-columns: auto 1fr 1fr;
+    grid-template-columns: auto 1fr 1fr;
 }
-
 </style>
