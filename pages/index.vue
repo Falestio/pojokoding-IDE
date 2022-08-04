@@ -3,6 +3,8 @@
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
+import * as base64 from "base-64"
+
 const extensions = [javascript(), oneDark];
 
 //================================================ JUDGE0 ABOUT
@@ -24,14 +26,16 @@ async function postAbout() {
 
 //=============================================== JUDGE0 POST SUBMISSION
 
-const code = ref("");
+let code = ref("");
 
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+let compiledOutput = ref(null)
 
 async function compileCode() {
-    const encodedCode = Buffer.from(code).toString("base64");
+    membukaOutput()
+
+    const encodedCode = base64.encode(code)
+    console.log('THIS IS ENCODED CODE', encodedCode)
+
     const baseUrl = "https://judge0-ce.p.rapidapi.com/submissions";
 
     const options = {
@@ -44,23 +48,28 @@ async function compileCode() {
             "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
         },
         body: {
-            "source-code": encodedCode,
-            language_id: 26,
+            "source_code": encodedCode,
+            "language_id": 63,
         },
     };
 
     const response = await useFetch(baseUrl, options);
+    console.log('THIS IS RESPONSE',response)
     const token = response.data.token;
+    console.log('THIS IS TOKEN',token)
 
-    await promiseTimeout(2500)
+    await useTimeout(2500)
 
-    const output = useFetch(`${baseUrl}/${token}`, {
+    const output = await useFetch(`${baseUrl}/${token}`, {
         params: { base64_encoded: true },
         headers: {
             "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
             "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
         },
     });
+
+    console.log('THIS IS OUTPUT',output)
+    compiledOutput = output
 }
 
 //================================================= UI
@@ -157,7 +166,7 @@ function membukaSoal() {
 
                 <div class="p-6" :class="{ hidden: !bukaOutput }">
                     <div class="bg-white w-full min-h-[20vh] text-lg">
-                        <pre>{{ data }}</pre>
+                        <pre>{{ compiledOutput }}</pre>
                     </div>
                 </div>
             </div>
@@ -176,7 +185,7 @@ function membukaSoal() {
                     class="flex items-center justify-end h-[58px] px-8 absolute bottom-0 bg-slate-600 w-full shadow-lg"
                 >
                     <button class="btn btn-primary btn-sm btn-outline mr-4" @click="postAbout()">Test</button>
-                    <button class="btn btn-primary btn-sm">Submit</button>
+                    <button class="btn btn-primary btn-sm" @click="compileCode()">Submit</button>
                 </div>
             </div>
         </div>

@@ -7,18 +7,19 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@iconify/json": "^2.1.86",
     "@nuxtjs/tailwindcss": "^5.3.1",
-    "@vueuse/core": "^9.0.2",
-    "@vueuse/nuxt": "^9.0.2",
+    "@vueuse/core": "^9.1.0",
+    "@vueuse/nuxt": "^9.1.0",
     "nuxt": "3.0.0-rc.6",
     "unplugin-icons": "^0.14.8"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.0.2",
     "@codemirror/theme-one-dark": "^6.0.0",
+    "base-64": "^1.0.0",
     "codemirror": "^6.0.1",
     "daisyui": "^2.20.0",
+    "utf8": "^3.0.0",
     "vue-codemirror": "^6.0.2"
   }
 }
