@@ -3,7 +3,8 @@
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
-import * as base64 from "base-64"
+import * as base64 from 'base-64'
+import * as utf8 from 'utf8'
 
 const extensions = [javascript(), oneDark];
 
@@ -27,14 +28,14 @@ async function postAbout() {
 //=============================================== JUDGE0 POST SUBMISSION
 
 let code = ref("");
-
-let compiledOutput = ref(null)
+let compiledOutput = ref("")
+let response = ref("")
 
 async function compileCode() {
     membukaOutput()
 
-    const encodedCode = base64.encode(code)
-    console.log('THIS IS ENCODED CODE', encodedCode)
+    const encodedCode = base64.encode(utf8.encode(code.value))
+    console.log('THIS IS ENCODED CODE:', encodedCode)
 
     const baseUrl = "https://judge0-ce.p.rapidapi.com/submissions";
 
@@ -53,15 +54,14 @@ async function compileCode() {
         },
     };
 
-    const response = await useFetch(baseUrl, options);
-    console.log('THIS IS RESPONSE',response)
-    const token = response.data.token;
-    console.log('THIS IS TOKEN',token)
+    response.value = await useFetch(baseUrl, options);
+    console.log('THIS IS RESPONSE:',response)
+    const token = response.value.data.token;
+    console.log('THIS IS TOKEN:',token)
 
-    await useTimeout(2500)
+    await useTimeout(2000)
 
     const output = await useFetch(`${baseUrl}/${token}`, {
-        params: { base64_encoded: true },
         headers: {
             "X-RapidAPI-Key": "148bd21388msh371e4376375abbep1af45djsn1627d694daa9",
             "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
@@ -69,7 +69,7 @@ async function compileCode() {
     });
 
     console.log('THIS IS OUTPUT',output)
-    compiledOutput = output
+    compiledOutput.value = output
 }
 
 //================================================= UI
@@ -166,7 +166,8 @@ function membukaSoal() {
 
                 <div class="p-6" :class="{ hidden: !bukaOutput }">
                     <div class="bg-white w-full min-h-[20vh] text-lg">
-                        <pre>{{ compiledOutput }}</pre>
+                        <pre class="font-bold">{{ compiledOutput }}</pre>
+                        <pre>{{response}}</pre>
                     </div>
                 </div>
             </div>
